@@ -1,0 +1,16 @@
+service: soundcloud-web-scraper
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-east-2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ses:SendEmail"
+        - "ses:SendRawEmail"
+      Resource: "*"
+functions:
+  emailOnNewUpload:
+    handler: handler.emailOnNewUpload
+    events:
+      - schedule: cron(0 12 * * ? *)
