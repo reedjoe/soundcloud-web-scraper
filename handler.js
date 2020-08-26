@@ -3,7 +3,7 @@ const { getUpdatedStatus, getLatestSongName, sendUpdateEmail } = require('./help
 
 const url = 'https://soundcloud.com/smooth4000';
 
-module.exports.emailOnNewUpload = async event => {
+module.exports.emailOnNewUpload = async (event) => {
   let isUpdated, latestSongName;
   request.get(url)
     .then(({data}) => {

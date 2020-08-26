@@ -15,7 +15,7 @@ function getLatestSongName () {
     return $('h2 ~ article > h2 > a').first().text().trim();
 }
 
-function sendUpdateEmail(message) {
+async function sendUpdateEmail(message) {
     var params = {
         Destination: {
             ToAddresses: [emailAddress]
@@ -26,16 +26,23 @@ function sendUpdateEmail(message) {
             },
             Subject: { Data: "Smooth 4000 Web Scraper Update" }
         },
-        Source: emailAddress
+        Source: emailAddress,
+        Tags: [
+            {
+              Name: 'source', /* required */
+              Value: 'AWS' /* required */
+            },
+            /* more items */
+        ]
     };
   
-    ses.sendEmail(params, function (err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(data);
-        }
-    });
+    try {
+        const data = await ses.sendEmail(params).promise()
+        return data
+      } catch (err) {
+        console.log(err);
+        return err
+      }
 }
   
 module.exports = {
